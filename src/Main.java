@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -65,12 +66,32 @@ public class Main {
         Spark.post("/search", (request, response)->{
             String name = request.queryParams("searchBox");
             //int idNumber = Integer.parseInt(idNum);
-            Person person = persons.stream()
-                                            .filter(m->m.first_name.toLowerCase().equals(name.toLowerCase()))
-                                            .findFirst().get();
-            response.redirect("/person/id/" + person.id);
+            Person person = null;
+            try {
+                person = seperateFirstAndLastName(name);
+                response.redirect("/person/id/" + person.id);
+            } catch (Exception e) {
+                response.redirect("/");
+                return "";
+            }
             return "";
         });
+    }
+
+    public static Person seperateFirstAndLastName(String name){
+        String[] fullName = name.split(" ");
+        String first_name = fullName[0];
+        String last_name = fullName[1];
+        Person p = checkFirstNameAndLastName(first_name, last_name);
+        return p;
+    }
+
+    public static Person checkFirstNameAndLastName(String first_name, String last_name){
+        Person person = persons.stream()
+                .filter(m->m.first_name.toLowerCase().equals(first_name.toLowerCase()))
+                .filter(m->m.last_name.toLowerCase().equals(last_name.toLowerCase()))
+                .findFirst().orElseThrow(NoSuchElementException::new);
+        return person;
     }
 
     public static void addCsvToArrayList() throws FileNotFoundException {
