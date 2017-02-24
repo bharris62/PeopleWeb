@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class Main {
     static ArrayList<Person> persons = new ArrayList<>();
-    static int peopleNumber = 0;
     public static void main(String[] args) throws FileNotFoundException {
         addCsvToArrayList();
         Spark.init();
@@ -21,10 +20,12 @@ public class Main {
             int idNum = (id != null) ? Integer.valueOf(id) : 0;
             ArrayList<Person> paginate = new ArrayList<>();
             for(Person p : persons) {
-                if(p.id >= idNum && p.id < idNum+20) {
+                if(p.id >= idNum && p.id <= idNum+20) {
                     paginate.add(p);
                 }
             }
+            Session session = request.session();
+            session.attribute("idNum", idNum+20);
 
             HashMap m = new HashMap();
             m.put("person", paginate);
@@ -40,7 +41,17 @@ public class Main {
         }, new MustacheTemplateEngine());
 
         Spark.post("/next", (request, response) -> {
-            response.redirect("/");
+            Session session = request.session();
+            int id = session.attribute("idNum");
+            response.redirect("/?id=" + id);
+            return "";
+        });
+
+        Spark.post("/previous", (request, response) -> {
+            Session session = request.session();
+            int id = session.attribute("idNum");
+            id = id - 40;
+            response.redirect("/?id=" + id);
             return "";
         });
     }

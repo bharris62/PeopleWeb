@@ -4,15 +4,46 @@
     <meta charset="UTF-8">
     <title>People</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-</head>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <style>
+        form {
+            display: inline-block;
+        / / Or display: inline;
+        }
+        body {
+            text: center; align-content: center;
+            background: linear-gradient(to right, rgba(255,0,0,0), rgba(232,244,248,1));
+        }
+        .button {
+            background-color: blue;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+        }
 
+        .button:hover {
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+    </style>
+</head>
 <body>
 <div>
     <nav class="navbar navbar-default">
@@ -21,18 +52,34 @@
         </div>
     </nav>
 </div>
-<div class="text-center">
-    {{#person}}
-    <h5><a href="/person/{{id}}">{{first_name}} {{last_name}}</a></h5><br>
-    {{/person}}
-    <div>
+<div class="col-md-4"></div>
+<div class="row col-md-4">
+    <div class="table-hover">
+        <table class="table table-hover">
+            <thead class="">
+            <tr>
+                <th class="text-center">Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#person}}
+            <tr>
+                <th class="text-center"><a href="/person/{{id}}"><h5>{{first_name}} {{last_name}}</h5></a></th>
+            </tr>
+            {{/person}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pager">
         <form action="/previous" method="post">
-            <button type="submit">Previous</button>
+            <button style="vertical-align:middle" class="button" type="submit">Previous</button>
         </form>
         <form action="/next" method="post">
-        <button type="submit">Next</button>
+            <button style="vertical-align:middle" class="button" type="submit"><span>Next</span></button>
         </form>
     </div>
+</div>
 </div>
 </body>
 </html>
