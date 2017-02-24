@@ -2,7 +2,6 @@ import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,30 +10,32 @@ import java.util.Scanner;
 
 public class Main {
     static ArrayList<Person> persons = new ArrayList<>();
+    static final int numPerPage = 10;
     public static void main(String[] args) throws FileNotFoundException {
         addCsvToArrayList();
         Spark.init();
 
         Spark.get("/", (request, response)->{
-            String id = request.queryParams("id");
+            String id = request.queryParams("offset");
             int idNum = (id != null) ? Integer.valueOf(id) : 0;
             ArrayList<Person> paginate = new ArrayList<>();
             for(Person p : persons) {
-                if(p.id >= idNum && p.id <= idNum+20) {
+                if(p.id > idNum && p.id <= idNum+numPerPage) {
                     paginate.add(p);
                 }
             }
             Session session = request.session();
-            session.attribute("idNum", idNum+20);
+            session.attribute("idNum", idNum+numPerPage);
 
             HashMap m = new HashMap();
             m.put("person", paginate);
+            m.put("numPerPage", numPerPage);
             return new ModelAndView(m, "home.html");
         }, new MustacheTemplateEngine());
 
-        Spark.get("/person/:id", (request, response) -> {
+        Spark.get("/person/id/:id", (request, response) -> {
             String id = request.params(":id");
-            int idNum = (id != null) ? Integer.valueOf(id) : 1;
+            int idNum = (id != null) ? Integer.valueOf(id) : 0;
 
             HashMap m = new HashMap();
             return new ModelAndView(persons.get(idNum -1),"details.html");
@@ -43,21 +44,34 @@ public class Main {
         Spark.post("/next", (request, response) -> {
             Session session = request.session();
             int id = session.attribute("idNum");
-            response.redirect("/?id=" + id);
+            if(id > persons.size()) {
+                id -= numPerPage;
+            }
+            response.redirect("/?offset=" + id);
             return "";
         });
 
         Spark.post("/previous", (request, response) -> {
             Session session = request.session();
             int id = session.attribute("idNum");
-            id = id - 40;
-            response.redirect("/?id=" + id);
+            id = id - ((numPerPage * 2));
+            if(id <= 0 ){
+                id = 0;
+            }
+            response.redirect("/?offset=" + id);
+            return "";
+        });
+
+        Spark.post("/search", (request, response)->{
+            String name = request.queryParams("searchBox");
+            //int idNumber = Integer.parseInt(idNum);
+            Person person = persons.stream()
+                                            .filter(m->m.first_name.toLowerCase().equals(name.toLowerCase()))
+                                            .findFirst().get();
+            response.redirect("/person/id/" + person.id);
             return "";
         });
     }
-
-
-
 
     public static void addCsvToArrayList() throws FileNotFoundException {
         File f = null;
