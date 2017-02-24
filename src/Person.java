@@ -6,15 +6,15 @@ public class Person {
     String first_name;
     String last_name;
     String email;
-    String countyr;
+    String country;
     String ip_address;
 
-    public Person(int id, String first_name, String last_name, String email, String countyr, String ip_address) {
+    public Person(int id, String first_name, String last_name, String email, String country, String ip_address) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
-        this.countyr = countyr;
+        this.country = country;
         this.ip_address = ip_address;
     }
 
@@ -52,12 +52,12 @@ public class Person {
         this.email = email;
     }
 
-    public String getCountyr() {
-        return countyr;
+    public String getCountry() {
+        return country;
     }
 
-    public void setCountyr(String countyr) {
-        this.countyr = countyr;
+    public void setCountry(String countyr) {
+        this.country = countyr;
     }
 
     public String getIp_address() {
