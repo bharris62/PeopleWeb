@@ -105,12 +105,12 @@
     </div>
 
     <div class="pager">
-        <form action="/previous" method="post">
+        {{#prevNum}}<form action="/previous" method="post">
             <button style="vertical-align:middle" class="button" type="submit">Previous</button>
-        </form>
-        <form action="/next" method="post">
+        </form>{{/prevNum}}
+       {{#nextNum}} <form action="/next" method="post">
             <button style="vertical-align:middle" class="button" type="submit"><span>Next</span></button>
-        </form>
+        </form>{{/nextNum}}
     </div>
 </div>
 </div>

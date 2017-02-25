@@ -29,8 +29,18 @@ public class Main {
             session.attribute("idNum", idNum+numPerPage);
 
             HashMap m = new HashMap();
+
+            if(idNum >=10){
+                m.put("prevNum", idNum);
+            }else m.put("prevNum", null);
+
+            if(idNum < 990) {
+                m.put("nextNum", idNum);
+            }else m.put("nextNum", null);
+
             m.put("person", paginate);
             m.put("numPerPage", numPerPage);
+
             return new ModelAndView(m, "home.html");
         }, new MustacheTemplateEngine());
 
@@ -45,7 +55,7 @@ public class Main {
         Spark.post("/next", (request, response) -> {
             Session session = request.session();
             int id = session.attribute("idNum");
-            if(id > persons.size()) {
+            if(id >= persons.size()) {
                 id -= numPerPage;
             }
             response.redirect("/?offset=" + id);
@@ -66,12 +76,14 @@ public class Main {
         Spark.post("/search", (request, response)->{
             String name = request.queryParams("searchBox");
             //int idNumber = Integer.parseInt(idNum);
+            Session session = request.session();
+            int id = session.attribute("idNum");
             Person person = null;
             try {
                 person = seperateFirstAndLastName(name);
                 response.redirect("/person/id/" + person.id);
             } catch (Exception e) {
-                response.redirect("/");
+                response.redirect("/?offset=" + id);
                 return "";
             }
             return "";

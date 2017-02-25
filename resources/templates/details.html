@@ -27,10 +27,38 @@
             background: url(https://s2.postimg.org/qsl2pwkl5/minimal.png);
             color: white;
         }
+        .button {
+            background-color: Red;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+        }
+
+        .button:hover {
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+        form {
+            display: inline-block;
+        / / Or display: inline;
+        }
+        body {
+            text: center; align-content: center;
+        }
     </style>
 
 </head>
 <body>
+<div>
+    <a href="/"><button style="vertical-align:middle" class="button" type="submit"><span>BACK</span></button></a>
+</div>
 <div class="container container-table text-center">
     <div class="row vertical-center-row">
         <h1>id: {{id}}  <span class="glyphicon glyphicon-tag"></span></h1><br>
@@ -39,6 +67,7 @@
         <h1>country: {{country}}  <span class="glyphicon glyphicon-plane"></span></h1><br>
         <h1>ip address: {{ip_address}}  <span class="glyphicon glyphicon-map-marker"></span></h1><br>
     </div>
+
 </div>
 
 </body>
